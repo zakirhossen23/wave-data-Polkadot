@@ -9,7 +9,7 @@ import {web3Enable, isWeb3Injected, web3Accounts} from "@polkadot/extension-dapp
 import './Login.css';
 function Login() {
    let navigate = useNavigate();
-   const {  api,contract, signerAddress, sendTransaction,ReadContractByQuery,getMessage } = useContract();
+   const {  api,contract, signerAddress, sendTransaction,ReadContractByQuery,getMessage,getQuery } = useContract();
    const [isPolkadotConnected, setisPolkadotConnected] = useState(false)
 
    window.onload = (e) => {
