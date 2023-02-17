@@ -24,4 +24,4 @@
 ### Website
 https://wave-data-polkadot.vercel.app
 ### App
-https://wavedata-app-celo.vercel.app/
+https://wave-data-polkadot-app.vercel.app/
