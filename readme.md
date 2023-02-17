@@ -22,6 +22,6 @@
 
 ## Test:
 ### Website
-https://wave-data-celo.vercel.app/ 
+https://wave-data-polkadot.vercel.app
 ### App
 https://wavedata-app-celo.vercel.app/
