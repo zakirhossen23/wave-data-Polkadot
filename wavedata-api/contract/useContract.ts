@@ -1,30 +1,143 @@
-import {ethers} from "ethers";
-import erc721 from "./deployments/celo/WaveData.json";
-import Web3 from "web3";
-import {Buffer} from "buffer";
+import {ApiPromise, Keyring, WsProvider} from "@polkadot/api";
+import {options} from "@astar-network/astar-api";
+import {getDecodedOutput} from "./helpers";
+
+import getContract from "./getContract";
 export default async function useContract() {
 	let contractInstance = {
+		api: null,
 		contract: null,
-		signerAddress: null
+		signerAddress: null,
+		signerPair: null,
+		sendTransaction: sendTransaction,
+		ReadContractByQuery: ReadContractByQuery,
+		getMessage: getMessage,
+		getQuery: getQuery,
+		getTX: getTX,
+		currentChain: null
 	};
-	// const Web3 = require('web3');
-	let private_key = "fb57cdb52c16a26a9f54d37ce8f106bc4a334772d5c376c08f009e042cb0a7fe";
-	let provider_url = "https://alfajores-forno.celo-testnet.org";
-	// const provider = new ethers.providers.JsonRpcProvider(provider_url);
-	// const signer = new ethers.Wallet(private_key,provider)
-	// const contract = new ethers.Contract(erc721.address, erc721.abi, signer)
+	const WS_PROVIDER = "wss://shibuya-rpc.dwellir.com"; // shibuya
 
-	const provider = new Web3.providers.HttpProvider(provider_url);
-	const web3 = new Web3(provider);
 
-	const signer = web3.eth.accounts.wallet.add(private_key); //Adding private key
-	const contract = new web3.eth.Contract(erc721.abi as any, erc721.address).methods;
+	try {
+		const provider = new WsProvider(WS_PROVIDER);
+		const api = new ApiPromise(options({provider}));
+		
+		await api.isReady;
+		const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
 
-	contractInstance.signerAddress = signer.address as any;
-	contractInstance.contract = contract as any;
+		const pair = keyring.addFromMnemonic('bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice')
+
+		contractInstance.signerPair = pair as any;
+
+		contractInstance.api = api as any;
+
+		contractInstance.contract = await getContract(api) as any;
+
+		contractInstance.signerAddress = pair.address as any;
+	} catch (error) {
+		console.error(error);
+	}
+	
 	return contractInstance;
 }
 
-export function base64DecodeUnicode(base64String) {
-	return Buffer.from(base64String, "base64").toString('utf8');
+
+async function sendTransaction(api,contract, signerAddress, signerPair, method, args = null) {
+	let tx = getTX(contract,method);
+	let query  = getQuery(contract,method);
+	let gasLimit;
+	if (args) {
+		const {gasRequired, result, output} = await query(
+			signerAddress,
+			{
+				gasLimit: api.registry.createType("WeightV2", {
+					refTime: 6219235328,
+					proofSize: 131072
+				}),
+				storageDepositLimit: null
+			},
+			...args as any
+		);
+		gasLimit = api.registry.createType("WeightV2", gasRequired);
+	} else {
+		const {gasRequired, result, output} = await query(signerAddress, {
+			gasLimit: api.registry.createType("WeightV2", {
+				refTime: 6219235328,
+				proofSize: 131072
+			}),
+			storageDepositLimit: null
+		});
+		gasLimit = api.registry.createType("WeightV2", gasRequired);
+	}
+	
+	const sendTX =	new Promise(function executor(resolve) {
+		 tx({
+				gasLimit: gasLimit,
+				storageDepositLimit: null
+			},
+			...args as any)
+			.signAndSend(signerPair, async (res) => {
+				if (res.status.isInBlock) {
+					console.log("in a block");
+				} else if (res.status.isFinalized) {
+					console.log("finalized");
+					resolve("OK");
+				}
+			});
+	});
+	await sendTX;
+	
+}
+
+async function ReadContractByQuery(api, signerAddress, query, args = null) {
+	if (args) {
+		const {gasRequired, result, output} = await query(
+			signerAddress,
+			{
+				gasLimit: api.registry.createType("WeightV2", {
+					refTime: 6219235328,
+					proofSize: 131072
+				}),
+				storageDepositLimit: null
+			},
+			...args as any
+		);
+		return output.toHuman().Ok;
+	} else {
+		const {gasRequired, result, output} = await query(signerAddress, {
+			gasLimit: api.registry.createType("WeightV2", {
+				refTime: 6219235328,
+				proofSize: 131072
+			}),
+			storageDepositLimit: null
+		});
+		return output.toHuman().Ok;
+	}
+}
+function getMessage(contract, find_contract) {
+	for (let i = 0; i < contract.abi.messages.length; i++) {
+		if (find_contract == contract.abi.messages[i]["identifier"]) {
+			return contract.abi.messages[i];
+		}
+	}
+}
+
+function getQuery(contract,find_contract) {
+	let messageName = "";
+	for (let i = 0; i < contract.abi.messages.length; i++) {
+		if (find_contract == contract.abi.messages[i]["identifier"]) {
+			messageName = contract.abi.messages[i]["method"];
+			return contract.query[messageName];
+		}
+	}
+}
+function getTX(contract,find_contract) {
+	let messageName = "";
+	for (let i = 0; i < contract.abi.messages.length; i++) {
+		if (find_contract == contract.abi.messages[i]["identifier"]) {
+			messageName = contract.abi.messages[i]["method"];
+			return contract.tx[messageName];
+		}
+	}
 }

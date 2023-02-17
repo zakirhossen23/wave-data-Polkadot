@@ -9,7 +9,7 @@ import {web3Enable, isWeb3Injected, web3Accounts} from "@polkadot/extension-dapp
 import './Login.css';
 function Login() {
    let navigate = useNavigate();
-   const {  api,contract, signerAddress, sendTransaction,ReadContractValue,getMessage } = useContract();
+   const {  api,contract, signerAddress, sendTransaction,ReadContractByQuery,getMessage } = useContract();
    const [isPolkadotConnected, setisPolkadotConnected] = useState(false)
 
    window.onload = (e) => {
@@ -67,7 +67,7 @@ function Login() {
       }
       try {
 
-         const result = await ReadContractValue(api,signerAddress, getMessage("CheckEmail"),[emailTXT.value])
+         const result = await ReadContractByQuery(api,signerAddress, getQuery("CheckEmail"),[emailTXT.value])
     
          if (result?.toString() === "False") {
             FailedNotification.innerText = "Email is not valid"
@@ -76,7 +76,7 @@ function Login() {
             LoadingICON.style.display = "none";
             return;
          }
-         let userid =  await ReadContractValue(api,signerAddress, getMessage("Login"),[emailTXT.value, passwordTXT.value]);
+         let userid =  await ReadContractByQuery(api,signerAddress, getQuery("Login"),[emailTXT.value, passwordTXT.value]);
 
          if (userid !== "False") {
             LoadingICON.style.display = "none";

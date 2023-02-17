@@ -39,7 +39,7 @@ function Register() {
 
         try {
             if (contract !== null) {   
-                 const result = await ReadContractValue(api,signerAddress, getMessage("CheckEmail"),[emailTXT.value])
+                 const result = await ReadContractByQuery(api,signerAddress, getQuery("CheckEmail"),[emailTXT.value])
     
                 if (result === "False") {
                     	

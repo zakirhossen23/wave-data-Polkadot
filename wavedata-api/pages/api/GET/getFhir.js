@@ -5,18 +5,18 @@ export default async function handler(req, res) {
 	} catch (error) {}
 
 	let useContract = await import("../../../contract/useContract.ts");
-	let {contract, signerAddress} = await useContract.default();
-	let fhir_element = await contract._fhirMap(Number(req.query.userid)).call();
-	let userdetails = await contract.getUserDetails(Number(req.query.userid)).call();
+	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+	let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_fhirMap"), [Number(req.query.userid)]);
+	let userdetails = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(req.query.userid)]);
 	var newFhir = {
-		id: Number(fhir_element.user_id),
-		family_name: fhir_element.family_name,
-		given_name: fhir_element.given_name,
+		id: Number(fhir_element.userId),
+		family_name: fhir_element.familyName,
+		given_name: fhir_element.givenName,
 		identifier: fhir_element.identifier,
 		phone: fhir_element.phone,
 		gender: fhir_element.gender,
 		about: fhir_element.about,
-		patient_id: fhir_element.patient_id,
+		patient_id: fhir_element.patientId,
 		privatekey: userdetails[4] + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 		image: fhir_element.image,
 		credits: fhir_element.credits

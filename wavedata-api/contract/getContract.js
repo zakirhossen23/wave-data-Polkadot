@@ -1,9 +1,5 @@
-import Web3 from 'web3'
 import { Abi, ContractPromise } from '@polkadot/api-contract'
-
-import { ApiPromise, Keyring, WsProvider } from '@polkadot/api'
-import abiData from '../ink_contracts/wavedata/target/ink/metadata.json';
-import { options } from '@astar-network/astar-api';
+import abiData from './ink_contracts//metadata.json';
 
 
 const address = 'YhzcbJWUYeoRzt6GbNbp22vRRP5DADSHKNYk1qVj3qCZeCW'//smart contract deployed address 
