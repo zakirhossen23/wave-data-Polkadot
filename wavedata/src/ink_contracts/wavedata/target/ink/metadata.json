@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x7bb71620de1d2505ee0d95cac3e82535a418ff085f18e59128252e76d7f21842",
+    "hash": "0xfbef2468ee4d6b43fdffec08b65f04c9eebec3cc5e831e158ebd3f69e38467ae",
     "language": "ink! 4.0.0-rc",
     "compiler": "rustc 1.69.0-nightly",
     "build_info": {
@@ -1490,6 +1490,46 @@
           "type": 2
         },
         "selector": "0xc5451298"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "label": "reset_all",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 2
+        },
+        "selector": "0x0549858a"
+      },
+      {
+        "args": [
+          {
+            "label": "user_id",
+            "type": {
+              "displayName": [
+                "i32"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "reset_app",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 2
+        },
+        "selector": "0x1e06cda0"
       }
     ]
   },
