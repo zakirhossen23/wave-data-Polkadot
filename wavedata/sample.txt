@@ -3,7 +3,7 @@ steve.thijssen@gmail.com
 
 
 FHIR
-wavedata
+wavedata2022
 April14202233%
 
 
@@ -13,7 +13,9 @@ Gerber and her team studied the data of 157,000 women Veterans over the age of 4
 
 
 https://i.postimg.cc/hGRz8wwj/veteran.png
-https://th.bing.com/th/id/R.d3b74c76369b42d329b703a0bf87e94c?rik=l%2fLVJXJp7Upr1A&pid=ImgRaw&r=0
+https://wallpapercave.com/wp/wp6770165.jpg
+
+
 
 Survey:
 1.Survey F36 & Measurements
@@ -53,6 +55,21 @@ The following items are about activities you might do during a typical day. Does
 9. Dressing yourself 
 
 
+
+Section 6 (Rating 5)
+PAIN
+1. How much bodily pain have you had during the past 4 weeks?
+2. During the past 4 weeks, how much did pain intergere with your normal work (including both work outside the home and housework)?
+----------Open Questions
+
+1. What medications did you take today?
+I have taken medications for headache and pain.
+
+
+2. How are you feeling today?
+I had some headache while working at office. While returning from office I had some chest pain.
+
+
 Section 3 (Yes/No)
 PHYSICAL HEALTH PROBLEMS
 
@@ -77,29 +94,18 @@ SOCIAL ACTIVITIES
 
 1. Emotional problems interfered with your normal social activities with family, friends, neighbors or groups?
 
-
-Section 6 (Rating 5)
-PAIN
-1. How much bodily pain have you had during the past 4 weeks?
-2. During the past 4 weeks, how much did pain intergere with your normal work (including both work outside the home and housework)?
-
-
-
 ------Mobile
 Caryan
 
 Caryn49@gmail.com
 
+9873c363370664864c07abfd6d50cf7ad19b490c0a60b707a51e390e004d6a62
+
 Caryn49
 999-56-7350
 104064
 
-fb57cdb52c16a26a9f54d37ce8f106bc4a334772d5c376c08f009e042cb0a7fe
-
 https://i.postimg.cc/B6N2wWwq/person.png
-
-
-
 
 
 

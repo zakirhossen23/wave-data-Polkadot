@@ -358,7 +358,7 @@ mod wavedata {
         #[ink(message)]
         pub fn UpdateFhir(&mut self, user_id: i32, family_name: String, given_name: String, identifier: String, phone: String, gender: String, about: String, patient_id: String) {
             let mut user = self._userMap.get(user_id).unwrap();
-            let mut stuff = fhir_struct{
+            let stuff = fhir_struct{
                 user_id : user_id,
                 family_name : family_name,
                 given_name : given_name,
@@ -387,6 +387,11 @@ mod wavedata {
                 date: date,
                 given_permission: given_permission,
             };
+
+            let mut trial = self._trialMap.get(trial_id).unwrap();
+            trial.contributors  += 1;
+            self._trialMap.insert(trial_id, &trial);
+
             self._ongoingMap.insert(self._OngoingIds, &stuff);
             self._OngoingIds += 1;
         }
@@ -574,6 +579,7 @@ mod wavedata {
 
         pub fn reset_all(&mut self) {
             self._UserIds = 0;
+            self._FhirIds= 0;
             self._TrialIds = 0;
             self._SurveyIds = 0;
             self._SurveyCategoryIds = 0;
@@ -597,12 +603,13 @@ mod wavedata {
         pub fn reset_app(&mut self, user_id: i32) {
             self._UserIds = self._UserIds - 1;
             self._OngoingIds = 0;
+            self._FhirIds= 0;
             self._AnsweredIds = 0;
             self._CompletedSurveyIds = 0;
 
             //Variables
             self._userMap.remove(user_id);
-            self._fhirMap.remove(user_id);
+            self._fhirMap = Mapping::new();
 
             self._ongoingMap = Mapping::new();
             self._questionanswerdMap = Mapping::new();

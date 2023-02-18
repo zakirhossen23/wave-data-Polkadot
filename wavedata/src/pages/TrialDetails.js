@@ -294,8 +294,8 @@ function TrialDetails() {
 
 		for (let i = 0; i < Number(totalOngoing); i++) {
 			let element = await ReadContractByQuery(api, signerAddress, getQuery("_ongoingMap"), [parseInt(i)]);
-			let user_element = await ReadContractByQuery(api, signerAddress, getQuery("getUserDetails"), [Number(element.user_id)]);
-			let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery("_fhirMap"), [Number(element.user_id)]);
+			let user_element = await ReadContractByQuery(api, signerAddress, getQuery("getUserDetails"), [Number(element.userId)]);
+			let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery("_fhirMap"), [Number(user_element[6])]);
 
 			if (Number(element.trialId) === parseInt(params.id)) {
 				setContributors((prevState) => [

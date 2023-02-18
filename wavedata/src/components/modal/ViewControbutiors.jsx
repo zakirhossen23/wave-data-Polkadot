@@ -6,9 +6,11 @@ import {Bar} from "react-chartjs-2";
 import {Chart as ChartJS, BarElement, CategoryScale, LinearScale, PointElement, Tooltip} from "chart.js";
 import GraphChartLine from "../Card/graphChartLine";
 import GraphChartBar from "../Card/graphChartBar";
+import useContract from "../../services/useContract";
 
 export default function ViewControbutiors({show,setShow, onHide, id}) {
 	ChartJS.register(BarElement, CategoryScale, LinearScale, PointElement, Tooltip);
+	const {  api,contract, signerAddress, sendTransaction,ReadContractValue,ReadContractByQuery,getMessage,getQuery,getTX } = useContract();
 
 	const [contributor, setContributor] = useState({});
 	const [FHIRS_COLSAll, setFHIRS_COLSAll] = useState([]);
@@ -19,13 +21,11 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 
 	async function LoadData() {
 		if (typeof window?.contract !== "undefined") {
-			const element = await window?.contract._ongoingMap(id).call();
+			let element = await ReadContractByQuery(api,signerAddress, getQuery("_ongoingMap"),[Number(id)])
+			let user_element = await ReadContractByQuery(api,signerAddress, getQuery("getUserDetails"),[Number(element.userId)])			
+			let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery("_fhirMap"), [Number(user_element[6])]);
 
-			const user_element = await window?.contract.getUserDetails(Number(element.user_id)).call();
-			const fhir_element = await window?.contract._fhirMap(Number(element.user_id)).call();
-
-			let given_permission = eval("(" + element.given_permission + ")");
-			console.log(given_permission);
+			let given_permission = eval("(" + element.givenPermission + ")");
 			let FHIRS_COLS = [];
 			let FHIRS_ANS = [];
 
@@ -58,12 +58,12 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 			if (given_permission.family)
 				FHIRS_ANS.push({
 					id: "family_name",
-					title: fhir_element.family_name
+					title: fhir_element.familyName
 				});
 			if (given_permission.given)
 				FHIRS_ANS.push({
 					id: "given_name",
-					title: fhir_element.given_name
+					title: fhir_element.givenName
 				});
 			if (given_permission.gender)
 				FHIRS_ANS.push({
@@ -82,16 +82,16 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			setContributor({
 				id: id,
-				user_id: Number(element.user_id),
+				user_id: Number(element.userId),
 				photo: user_element[0],
 				name: user_element[2],
-				family_name: fhir_element.family_name,
-				givenname: fhir_element.given_name,
+				family_name: fhir_element.familyName,
+				givenname: fhir_element.givenName,
 				identifier: fhir_element.identifier,
 				phone: fhir_element.phone,
 				gender: fhir_element.gender,
 				about: fhir_element.about,
-				patient_id: fhir_element.patient_id,
+				patient_id: fhir_element.patientId,
 				joined: element.date,
 				given_permission: given_permission
 			});
@@ -101,7 +101,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 			let chart_all_liner = [];
 			let chart_all_bar = [];
 			if (given_permission.blood) {
-				let bloodData = await GetOneValueTypesWearableData(Number(element.user_id), user_element[5], 3001);
+				let bloodData = await GetOneValueTypesWearableData(Number(element.userId), user_element[5], 3001);
 				chart_all_liner.push({
 					id: "blood",
 					title: "Weekly Blood Date",
@@ -110,7 +110,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			}
 			if (given_permission.sleep) {
-				let sleepData = await GetSleepWearableData(Number(element.user_id), user_element[5]);
+				let sleepData = await GetSleepWearableData(Number(element.userId), user_element[5]);
 				chart_all_bar.push({
 					id: "sleep",
 					title: "Weekly Sleep Duration",
@@ -119,7 +119,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			}
 			if (given_permission.steps) {
-				let stepsData = await GetOneValueTypesWearableData(Number(element.user_id), user_element[5], 1000);
+				let stepsData = await GetOneValueTypesWearableData(Number(element.userId), user_element[5], 1000);
 				chart_all_bar.push({
 					id: "steps",
 					title: "Weekly Steps",
@@ -128,7 +128,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			}
 			if (given_permission.calories) {
-				let caloriesData = await GetOneValueTypesWearableData(Number(element.user_id), user_element[5], 1010);
+				let caloriesData = await GetOneValueTypesWearableData(Number(element.userId), user_element[5], 1010);
 				chart_all_bar.push({
 					id: "calories",
 					title: "Weekly Calories Burned",
