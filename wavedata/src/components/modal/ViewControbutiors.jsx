@@ -154,7 +154,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 		var endDate = getFormattedDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1));
 		let response = await (
 			await fetch(
-				`https://wave-data-celo-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005`
+				`https://wavedata-polkadot-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005`
 			)
 		).json();
 		let parsed = JSON.parse(response.value);
@@ -191,7 +191,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 		var endDate = getFormattedDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1));
 		let response = await (
 			await fetch(
-				`https://wave-data-celo-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=${valueTypes}`
+				`https://wavedata-polkadot-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=${valueTypes}`
 			)
 		).json();
 		let parsed = JSON.parse(response.value);
