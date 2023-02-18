@@ -24,7 +24,7 @@ export default function UpdateTrialModal({
         updateBTN.disabled = true;
         
         try {
-			await sendTransaction(api,contract,signerAddress, "UpdateTrial",[Number(id),image.value,title.value,description.value, parseInt(budget.value)]);
+			await sendTransaction(api,signerAddress, "UpdateTrial",[Number(id),image.value,title.value,description.value, parseInt(budget.value)]);
             notificationSuccess.style.display = "block";
             updateBTN.children[0].classList.add("hidden")
             updateBTN.children[1].innerText = "Update Trial"

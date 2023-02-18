@@ -26,7 +26,7 @@ export default function CreateSurveyModal({
         surveyBTN.children[1].innerText = ""
         surveyBTN.disabled = true;
         try {
-			await sendTransaction(api,contract,signerAddress, "CreateSurvey",[parseInt(Tiralid),Number(Cookies.get("userid")),name.value,description.value,d,image.value, Number(reward.value)]);
+			await sendTransaction(api,signerAddress, "CreateSurvey",[parseInt(Tiralid),Number(Cookies.get("userid")),name.value,description.value,d,image.value, Number(reward.value)]);
            
 			
             notificationSuccess.style.display = "block";

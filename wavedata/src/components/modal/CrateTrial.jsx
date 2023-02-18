@@ -41,7 +41,7 @@ export default function CreateTrialModal({show, onHide}) {
 		createBTN.disabled = true;
 		try {
 			
-			await sendTransaction(api,contract,signerAddress, "CreateTrial",[Number(Cookies.get("userid")), image.value, title.value, description.value, JSON.stringify(permissionData),0, 0, parseInt(budget.value)])
+			await sendTransaction(api,signerAddress, "CreateTrial",[Number(Cookies.get("userid")), image.value, title.value, description.value, JSON.stringify(permissionData),0, 0, parseInt(budget.value)])
 			
 			notificationSuccess.style.display = "block";
 			createBTN.children[0].classList.add("hidden");
