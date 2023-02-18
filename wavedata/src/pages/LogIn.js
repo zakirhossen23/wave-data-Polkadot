@@ -100,23 +100,23 @@ function Login() {
 	}
 	useEffect(() => {
 		async function check() {
-       
+			var buttonTextBox = document.getElementById("buttonText");
+			var LoadingICON = document.getElementById("LoadingICON");
 			if (window.localStorage.getItem("type") === "polkadot") {
 				await web3Enable("WaveData");
 				setisPolkadotConnected(true);
 			} else {
 				setisPolkadotConnected(false);
 			}
-         var buttonTextBox = document.getElementById("buttonText");
-         var LoadingICON = document.getElementById("LoadingICON");
-         if (window.contract != null){
-            LoadingICON.style.display = "none";
-            buttonTextBox.style.display = "block";
-         }else{            
-		   
-		      buttonTextBox.style.display = "none";
-		      LoadingICON.style.display = "block";
-         }
+			if (isPolkadotConnected) {
+				if (window.contract != null) {
+					LoadingICON.style.display = "none";
+					buttonTextBox.style.display = "block";
+				} else {
+					buttonTextBox.style.display = "none";
+					LoadingICON.style.display = "block";
+				}
+			}
 		}
 
 		check();
@@ -151,7 +151,7 @@ function Login() {
 							<>
 								<button
 									onClick={LoginClick}
-									className= {`bg-orange-500 text-white rounded-md shadow-md h-10 w-full mt-3 hover:bg-orange-600 transition-colors overflow:hidden flex content-center items-center justify-center cursor-pointer`}
+									className={`bg-orange-500 text-white rounded-md shadow-md h-10 w-full mt-3 hover:bg-orange-600 transition-colors overflow:hidden flex content-center items-center justify-center cursor-pointer`}
 								>
 									<i id="LoadingICON" style={{display: "none"}} className="select-none block w-min m-0 fa fa-circle-o-notch fa-spin"></i>
 									<span id="buttonText">Login</span>
