@@ -64,11 +64,11 @@ export default function useContract() {
 		fetchData();
 	}, []);
 
-	async function sendTransaction(api, signerAddress, method, args = null) {
+	async function sendTransaction(api, signerAddress, method, args = []) {
 		let tx = getTX(method);
 		let query  = getQuery(method);
 		let gasLimit;
-		if (args) {
+		if (args.length>0) {
 			const {gasRequired, result, output} = await query(
 				signerAddress,
 				{
