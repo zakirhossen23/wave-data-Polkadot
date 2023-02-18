@@ -1,7 +1,6 @@
 
 module.exports = {
   reactStrictMode: true,
-  distDir: 'dist',
   webpack: (config) => {
     config.resolve.fallback = {
       http: require.resolve('stream-http'),

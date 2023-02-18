@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 		return;
 	}
 	const {fullname, email, password} = req.body;
-	const result = await ReadContractByQuery(api,signerAddress, getQuery("CheckEmail"),[email])
+	const result = await ReadContractByQuery(api,signerAddress, getQuery(contract,"CheckEmail"),[email])
     
 	if (result !== "False") {
 		res.status(403).json({status: 403, error: "Account already exists!"});
