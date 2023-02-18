@@ -23,6 +23,7 @@ mod wavedata {
         image: String,
         credits: i32,
         accesstoken: String,
+        fhirid: i32,
     }
 
     #[derive(Debug, PartialEq, Eq, Encode, Decode)]
@@ -115,6 +116,7 @@ mod wavedata {
     pub struct Wavedata {
         //Variables
         _UserIds: i32,
+        _FhirIds: i32,
         _TrialIds: i32,
         _SurveyIds: i32,
         _SurveyCategoryIds: i32,
@@ -141,6 +143,7 @@ mod wavedata {
             Self {
                 //Variables
                 _UserIds: 0,
+                _FhirIds: 0,
                 _TrialIds: 0,
                 _SurveyIds: 0,
                 _SurveyCategoryIds: 0,
@@ -180,6 +183,8 @@ mod wavedata {
                 image: format!("{}", "https://i.postimg.cc/SsxGw5cZ/person.jpg"),
                 credits: 0,
                 accesstoken: accesstoken,
+                fhirid:0
+                
             };
             self._userMap.insert(self._UserIds, &stuff);
             self._UserIds += 1;
@@ -234,6 +239,7 @@ mod wavedata {
             result.push(user.email);
             result.push(String::from(&user.privatekey));
             result.push(user.accesstoken);
+            result.push(format!("{}", user.fhirid));
 
             return result;
         }
@@ -351,17 +357,22 @@ mod wavedata {
 
         #[ink(message)]
         pub fn UpdateFhir(&mut self, user_id: i32, family_name: String, given_name: String, identifier: String, phone: String, gender: String, about: String, patient_id: String) {
-            let mut stuff = self._fhirMap.get(user_id).unwrap();
-            stuff.user_id = user_id;
-            stuff.family_name = family_name;
-            stuff.given_name = given_name;
-            stuff.identifier = identifier;
-            stuff.phone = phone;
-            stuff.gender = gender;
-            stuff.about = about;
-            stuff.patient_id = patient_id;
+            let mut user = self._userMap.get(user_id).unwrap();
+            let mut stuff = fhir_struct{
+                user_id : user_id,
+                family_name : family_name,
+                given_name : given_name,
+                identifier : identifier,
+                phone : phone,
+                gender : gender,
+                about : about,
+                patient_id : patient_id,
+            };
+            user.fhirid = self._FhirIds;
 
-            self._fhirMap.insert(user_id, &stuff);
+            self._userMap.insert(user_id, &user);
+            self._fhirMap.insert(self._FhirIds, &stuff);
+            self._FhirIds += 1;
         }
 
         // endregion: Trial

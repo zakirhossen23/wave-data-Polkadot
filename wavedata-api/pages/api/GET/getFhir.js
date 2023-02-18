@@ -6,8 +6,9 @@ export default async function handler(req, res) {
 
 	let useContract = await import("../../../contract/useContract.ts");
 	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
-	let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_fhirMap"), [Number(req.query.userid)]);
+	
 	let userdetails = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(req.query.userid)]);
+	let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_fhirMap"), [Number(userdetails[6])]);
 	var newFhir = {
 		id: Number(fhir_element.userId),
 		family_name: fhir_element.familyName,

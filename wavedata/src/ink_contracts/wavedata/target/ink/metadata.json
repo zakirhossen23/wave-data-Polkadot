@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x6c2bb1d07ca662bf510a8bd72a7b291788ae4007a374fa001fef05883dc399a1",
+    "hash": "0x9e5b86657bb9eb503ab81c75f54d158146a6cb860857dd17fc412114f66e3461",
     "language": "ink! 4.0.0-rc",
     "compiler": "rustc 1.69.0-nightly",
     "build_info": {
@@ -1514,6 +1514,15 @@
                   "ty": 0
                 }
               },
+              "name": "_FhirIds"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              },
               "name": "_TrialIds"
             },
             {
@@ -1647,6 +1656,15 @@
                             }
                           },
                           "name": "accesstoken"
+                        },
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x3c2f28fa",
+                              "ty": 0
+                            }
+                          },
+                          "name": "fhirid"
                         }
                       ],
                       "name": "user_struct"
@@ -2595,6 +2613,11 @@
                 "name": "accesstoken",
                 "type": 1,
                 "typeName": "String"
+              },
+              {
+                "name": "fhirid",
+                "type": 0,
+                "typeName": "i32"
               }
             ]
           }
