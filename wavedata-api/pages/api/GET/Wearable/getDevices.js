@@ -8,18 +8,15 @@ export default async function handler(req, res) {
 	} catch (error) {}
 
 	let useContract = await import("../../../../contract/useContract.ts");
-	let {contract, signerAddress} = await useContract.default();
-	let details_element = await contract.getUserDetails(Number(req.query.userid)).call();
-
+	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+	let details_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(req.query.userid)]);
+	
 	if (details_element[5] === "") {
 		let registerpage = await import("../../POST/Register");
 		details_element[5] = await registerpage.GenerateAccessToken(details_element[2]);
 
-		await contract.UpdateAccessToken(Number(req.query.userid), details_element[5]).send({
-			from: signerAddress,
-			gasLimit: 6000000,
-			gasPrice: ethers.utils.parseUnits("9.0", "gwei")
-		});
+		
+	await sendTransaction(api,contract,signerAddress, "UpdateAccessToken",[Number(req.query.userid), details_element[5]]);
 	}
 	var myHeaders = new Headers();
 	myHeaders.append("AppAuthorization", wearableinfo.AppAuthorization);
