@@ -3,11 +3,13 @@ import {useState, useEffect} from "react";
 import useContract from "../../services/useContract";
 function ResetAll() {
 	let navigate = useNavigate();
-	const {contract, signerAddress, sendTransaction} = useContract();
+	const {api, contract, signerAddress, sendTransaction, ReadContractValue, ReadContractByQuery, getMessage, getQuery} = useContract();
 
 	async function ResetClick(event) {
+		
+		
 		event.target.disabled = true;
-		await sendTransaction(contract.reset_all());
+		await sendTransaction(api,signerAddress, "reset_all");
 		window.location.href = "/";
 
 		event.target.disabled = false;
@@ -16,7 +18,8 @@ function ResetAll() {
 	async function ResetApp(event) {
 		event.target.disabled = true;
       var UserIdTXT = document.getElementById("userid")
-		await sendTransaction(contract.reset_app(Number(UserIdTXT.value)));
+
+	  await sendTransaction(api,signerAddress, "reset_app",[Number(UserIdTXT.value)]);
 		window.location.href = "/";
 
 		event.target.disabled = false;

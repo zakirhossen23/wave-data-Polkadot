@@ -577,6 +577,7 @@ mod wavedata {
             }
         }
 
+        #[ink(message)]
         pub fn reset_all(&mut self) {
             self._UserIds = 0;
             self._FhirIds= 0;
@@ -600,6 +601,7 @@ mod wavedata {
             self._completedsurveyMap = Mapping::new();
         }
 
+        #[ink(message)]
         pub fn reset_app(&mut self, user_id: i32) {
             self._UserIds = self._UserIds - 1;
             self._OngoingIds = 0;
