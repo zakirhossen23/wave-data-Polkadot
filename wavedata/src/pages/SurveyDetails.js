@@ -81,7 +81,7 @@ function SurveyDetails() {
 		var categoryname = document.getElementsByName("categoryName")[index];
 		var categoryimagelink = document.getElementsByName("imagelink")[index];
 		
-		await sendTransaction(api,signerAddress, "CreateSurveyCategory",[categoryname.value, categoryimagelink.value]);
+		await sendTransaction(api,contract,signerAddress, "CreateSurveyCategory",[categoryname.value, categoryimagelink.value]);
 
 		setdataCategory((prevState) => [
 			...prevState,
@@ -179,7 +179,7 @@ function SurveyDetails() {
 		SaveBTN.disabled = true;
       try {
 		
-		await sendTransaction(api,signerAddress, "CreateOrSaveSections",[SURVEY_DATA.id, JSON.stringify(sectionsdata)]);
+		await sendTransaction(api,contract,signerAddress, "CreateOrSaveSections",[SURVEY_DATA.id, JSON.stringify(sectionsdata)]);
       } catch (error) {
          
       }

@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     const item = alldata[i];
     const { trialid,userid,surveyid, sectionid,questionid ,answer  } = item;
   
-    await sendTransaction(api,signerAddress, "CreateQuestionAnswer",[Number(trialid),Number(userid),Number(surveyid),sectionid,questionid ,answer]);
+    await sendTransaction(api,contract,signerAddress, "CreateQuestionAnswer",[Number(trialid),Number(userid),Number(surveyid),sectionid,questionid ,answer]);
     await sleep(1000);
   }
 

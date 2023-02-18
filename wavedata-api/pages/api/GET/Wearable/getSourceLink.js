@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 		details_element[5] = await registerpage.GenerateAccessToken(details_element[2]);
 
 
-		await sendTransaction(api,signerAddress, "UpdateAccessToken",[Number(req.query.userid), details_element[5]]);
+		await sendTransaction(api,contract,signerAddress, "UpdateAccessToken",[Number(req.query.userid), details_element[5]]);
            
 	}
 	var myHeaders = new Headers();

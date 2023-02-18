@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 	}
 	let accessToken = await GenerateAccessToken(fullname);
 	
-	await sendTransaction(api,signerAddress, "CreateAccount",[fullname, email, password, accessToken,signerAddress]);
+	await sendTransaction(api,contract,signerAddress, "CreateAccount",[fullname, email, password, accessToken,signerAddress]);
 	res.status(200).json({status: 200, value: "Registered!"});
 }
 

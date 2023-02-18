@@ -25,9 +25,9 @@ export default async function handler(req, res) {
   let credits = Number(details_element[1]) + Number(survey_element.reward)
 
   
-  await sendTransaction(api,signerAddress, "UpdateUser",[Number(userid), details_element[0], Number(credits)]);
+  await sendTransaction(api,contract,signerAddress, "UpdateUser",[Number(userid), details_element[0], Number(credits)]);
   
-  await sendTransaction(api,signerAddress, "CreateCompletedSurveys",[Number(surveyid), Number(userid), date, Number(trialid)]);
+  await sendTransaction(api,contract,signerAddress, "CreateCompletedSurveys",[Number(surveyid), Number(userid), date, Number(trialid)]);
 
   res.status(200).json({ status: 200, value: "Created" })
 
