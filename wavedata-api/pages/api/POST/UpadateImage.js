@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
 
     let useContract = await import("../../../contract/useContract.ts");
-    let { contract, signerAddress } = await useContract.default();
+    const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
   
     if (req.method !== 'POST') {
       res.status(405).json({ status: 405, error: "Method must have POST request" })
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     }
   
     const { userid, image } = req.body;
-    let details_element = await contract.getUserDetails(Number(userid)).call();
+    let details_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(userid)]);
   
     console.log(details_element);
 

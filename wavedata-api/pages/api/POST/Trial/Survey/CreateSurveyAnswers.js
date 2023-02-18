@@ -10,7 +10,8 @@ export default async function handler(req, res) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   let useContract = await import("../../../../../contract/useContract.ts");
-  let { contract, signerAddress } = await useContract.default();
+  const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+    
 
   if (req.method !== 'POST') {
     res.status(405).json({ status: 405, error: "Method must have POST request" })
@@ -22,11 +23,8 @@ export default async function handler(req, res) {
   for (let i = 0; i < alldata.length; i++) {
     const item = alldata[i];
     const { trialid,userid,surveyid, sectionid,questionid ,answer  } = item;
-    await contract.CreateQuestionAnswer(Number(trialid),Number(userid),Number(surveyid),sectionid,questionid ,answer ).send({
-      from:signerAddress,
-      gasLimit: 6000000,
-      gasPrice: ethers.utils.parseUnits('9.0', 'gwei')
-    });   
+  
+    await sendTransaction(api,signerAddress, "CreateQuestionAnswer",[Number(trialid),Number(userid),Number(surveyid),sectionid,questionid ,answer]);
     await sleep(1000);
   }
 

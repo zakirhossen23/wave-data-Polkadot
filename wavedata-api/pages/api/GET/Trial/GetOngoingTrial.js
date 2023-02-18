@@ -48,9 +48,9 @@ export default async function handler(req, res) {
       let completed_survey_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_completedsurveyMap"), [Number(all_completed_surveys[i])]);
       var new_completed_survey = {
         id: Number(completed_survey_element.completedSurveyId),
-        trial_id: Number(completed_survey_element.trial_id),
-        user_id: Number(completed_survey_element.user_id),
-        survey_id: Number(completed_survey_element.survey_id),
+        trial_id: Number(completed_survey_element.trialId),
+        user_id: Number(completed_survey_element.userId),
+        survey_id: Number(completed_survey_element.surveyId),
         date: completed_survey_element.date,
       };
       if (new_completed_survey.trial_id === Number(trial_id)){

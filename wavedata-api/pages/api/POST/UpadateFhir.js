@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 	} catch (error) {}
 
 	let useContract = await import("../../../contract/useContract.ts");
-	let {contract, signerAddress} = await useContract.default();
+	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
 
 	if (req.method !== "POST") {
 		res.status(405).json({status: 405, error: "Method must have POST request"});
@@ -26,13 +26,7 @@ export default async function handler(req, res) {
 	let DiseasesDiagnostic = allDiagnostic[allDiagnostic.length - 1]["resource"]["presentedForm"][0]["data"];
 	
 	let decodedDisease = useContract.base64DecodeUnicode(DiseasesDiagnostic);
+	await sendTransaction(api,signerAddress, "UpdateFhir",[Number(userid), patient_details["name"][0]['family'], givenname, identifier, patient_details["telecom"][0]["value"].toString(), patient_details["gender"], decodedDisease, patientid]);
 
-	
-	await contract.UpdateFhir(Number(userid), patient_details["name"][0]['family'], givenname, identifier, patient_details["telecom"][0]["value"].toString(), patient_details["gender"], decodedDisease, patientid).send({
-		from: signerAddress,
-		gasLimit: 6000000,
-		gasPrice: ethers.utils.parseUnits("9.0", "gwei")
-	});
-	
 	res.status(200).json({status: 200, value: "Updated!"});
 }

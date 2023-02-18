@@ -1,6 +1,6 @@
 import {ApiPromise, Keyring, WsProvider} from "@polkadot/api";
 import {options} from "@astar-network/astar-api";
-import {getDecodedOutput} from "./helpers";
+import {Buffer} from "buffer";
 
 import getContract from "./getContract";
 export default async function useContract() {
@@ -43,7 +43,7 @@ export default async function useContract() {
 }
 
 
-async function sendTransaction(api,contract, signerAddress, signerPair, method, args = null) {
+async function sendTransaction(api,contract, signerAddress, method, args = null) {
 	let tx = getTX(contract,method);
 	let query  = getQuery(contract,method);
 	let gasLimit;
@@ -71,13 +71,17 @@ async function sendTransaction(api,contract, signerAddress, signerPair, method, 
 		gasLimit = api.registry.createType("WeightV2", gasRequired);
 	}
 	
+	const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
+
+	const pair = keyring.addFromMnemonic('bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice')
+
 	const sendTX =	new Promise(function executor(resolve) {
 		 tx({
 				gasLimit: gasLimit,
 				storageDepositLimit: null
 			},
 			...args as any)
-			.signAndSend(signerPair, async (res) => {
+			.signAndSend(pair, async (res) => {
 				if (res.status.isInBlock) {
 					console.log("in a block");
 				} else if (res.status.isFinalized) {
@@ -140,4 +144,8 @@ function getTX(contract,find_contract) {
 			return contract.tx[messageName];
 		}
 	}
+}
+
+export function base64DecodeUnicode(base64String) {
+	return Buffer.from(base64String, "base64").toString('utf8');
 }

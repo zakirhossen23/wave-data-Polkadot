@@ -8,8 +8,8 @@ export default async function handler(req, res) {
 
 
   let useContract = await import("../../../../../contract/useContract.ts");
-  let { contract, signerAddress } = await useContract.default();
-
+  const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+    
   if (req.method !== 'POST') {
     res.status(405).json({ status: 405, error: "Method must have POST request" })
     return;
@@ -17,24 +17,17 @@ export default async function handler(req, res) {
 
   const { surveyid, userid, date, trialid } = req.body;
 
-  let survey_element = await contract._surveyMap(surveyid).call();
-
-  let details_element = await contract.getUserDetails(Number(userid)).call();
+	let survey_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_surveyMap"), [Number(surveyid)]);
+  
+	let details_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(surveyid)]);
+  
   
   let credits = Number(details_element[1]) + Number(survey_element.reward)
 
-  await contract.UpdateUser(Number(userid), details_element[0], Number(credits)).send({
-    from:signerAddress,
-    gasLimit: 6000000,
-    gasPrice: ethers.utils.parseUnits('9.0', 'gwei')
-  });
-
-  await contract.CreateCompletedSurveys(Number(surveyid), Number(userid), date, Number(trialid)).send({
-    from:signerAddress,
-    gasLimit: 6000000,
-    gasPrice: ethers.utils.parseUnits('9.0', 'gwei')
-  });
-
+  
+  await sendTransaction(api,signerAddress, "UpdateUser",[Number(userid), details_element[0], Number(credits)]);
+  
+  await sendTransaction(api,signerAddress, "CreateCompletedSurveys",[Number(surveyid), Number(userid), date, Number(trialid)]);
 
   res.status(200).json({ status: 200, value: "Created" })
 
