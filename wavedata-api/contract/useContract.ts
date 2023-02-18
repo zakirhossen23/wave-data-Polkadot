@@ -107,7 +107,11 @@ async function ReadContractByQuery(api, signerAddress, query, args = null) {
 			},
 			...args as any
 		);
-		return output.toHuman().Ok;
+		if (output){
+			return output.toHuman().Ok;
+		}else{
+			return null;
+		}
 	} else {
 		const {gasRequired, result, output} = await query(signerAddress, {
 			gasLimit: api.registry.createType("WeightV2", {
@@ -116,7 +120,11 @@ async function ReadContractByQuery(api, signerAddress, query, args = null) {
 			}),
 			storageDepositLimit: null
 		});
-		return output.toHuman().Ok;
+		if (output){
+			return output.toHuman().Ok;
+		}else{
+			return null;
+		}
 	}
 }
 function getMessage(contract, find_contract) {

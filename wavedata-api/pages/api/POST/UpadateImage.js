@@ -18,12 +18,8 @@ export default async function handler(req, res) {
     let details_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(userid)]);
   
     console.log(details_element);
-
-    await contract.UpdateUser(Number(userid), image, Number(details_element[1])).send({
-      from:signerAddress,
-      gasLimit: 6000000,
-      gasPrice: ethers.utils.parseUnits('9.0', 'gwei')
-    });
+	
+    await sendTransaction(api,contract,signerAddress, "UpdateUser",[Number(userid), image, Number(details_element[1])]);
     res.status(200).json({ status: 200, value: "Updated!" })
   
   }

@@ -232,7 +232,7 @@ mod wavedata {
             result.push(format!("{}", user.credits));
             result.push(user.name);
             result.push(user.email);
-            result.push(String::from(&user.privatekey[0..10]));
+            result.push(String::from(&user.privatekey));
             result.push(user.accesstoken);
 
             return result;
