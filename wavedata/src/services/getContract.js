@@ -6,7 +6,7 @@ import abiData from '../ink_contracts/wavedata/target/ink/metadata.json';
 import { options } from '@astar-network/astar-api';
 
 
-const address = 'WTXFEEFxitvh5g8zqct3Scyny5HtuBdjedav1oJRGZTmrcp'//smart contract deployed address 
+const address = 'Zxnt9BCBjhWXdNbHizbbZAM7W3UdhKfXj16GAo3PNzQDfd6'//smart contract deployed address 
 	
 export default async function getContract(api) {
 
