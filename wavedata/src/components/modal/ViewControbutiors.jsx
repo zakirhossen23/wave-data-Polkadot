@@ -150,8 +150,8 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 	}
 	async function GetSleepWearableData(userid, userToken) {
 		var today = new Date();
-		var startDate = getFormattedDate(new Date(2023, 01, 11));
-		var endDate = getFormattedDate(new Date(2023, 01, 17));
+		var startDate = getFormattedDate(new Date("2023-01-11"));
+		var endDate = getFormattedDate(new Date("2023-01-17"));
 		let response = await (
 			await fetch(
 				`https://wavedata-polkadot-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005`
@@ -187,8 +187,8 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 	}
 	async function GetOneValueTypesWearableData(userid, userToken, valueTypes) {
 		var today = new Date();
-		var startDate = getFormattedDate(new Date(2023, 01, 11));
-		var endDate = getFormattedDate(new Date(2023, 01, 17));
+		var startDate = getFormattedDate(new Date("2023-01-11"));
+		var endDate = getFormattedDate(new Date("2023-01-17"));
 		let response = await (
 			await fetch(
 				`https://wavedata-polkadot-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=${valueTypes}`
